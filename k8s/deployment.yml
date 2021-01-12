@@ -1,0 +1,22 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tiddlyhost-k8s
+spec:
+  template:
+    metadata:
+      name: tiddlyhost-pod
+    spec:
+      containers:
+      - name: rails-app
+        image: base
+        # This image is built locally
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 3000
+      - name: rails-db
+        image: postgres
+        environment:
+          POSTGRES_PASSWORD: notsecure123
+          restartPolicy: Never

@@ -51,6 +51,21 @@ bundle-install:
 secrets:
 	-docker-compose run --rm --no-deps base bash -c "EDITOR=vi bin/rails credentials:edit"
 
+minikube-build-base:
+	eval $$(minikube -p minikube docker-env) && $(MAKE) build-base
+
+start-minikube:
+	# Bring up k8s, show some info
+	#minikube version
+	#minikube start
+	#kubectl version
+	#kubectl cluster-info
+	#kubectl get nodes
+	# Create deployment
+	#kubectl create deployment tiddlyhost-minikube --image=base
+	kubectl get deployments
+	PODNAME=$$(kubectl get pods -o go-template --template '{{range .items}}{{.metadata.name}}{{"\n"}}{{end}}') && echo $$PODNAME
+
 # Try to be smart about how to run the tests
 # TODO: Refactor and integrate with "shell" and "join"
 tests:
